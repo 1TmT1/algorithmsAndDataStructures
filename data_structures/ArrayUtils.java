@@ -2,6 +2,7 @@ package data_structures;
 
 public class ArrayUtils {
 
+    // Time - O(n), Space - O(1) 
     public static void printArray(int[] arr) {
         for (int i = 0; i < arr.length; i++) {
             System.out.print(arr[i] + " ");
@@ -9,6 +10,7 @@ public class ArrayUtils {
         System.out.println();
     }
 
+    // Time - O(n), Space - O(n)
     public static int[] removeEvens(int[] arr) {
         int counter = 0;
         for (int i = 0; i < arr.length; i++) {
@@ -29,6 +31,7 @@ public class ArrayUtils {
         return oddArr;
     }
 
+    // Time - O(n), Space - O(1) 
     public static void reverseArray(int[] arr, int start, int end) {
         while(start < end) {
             int temp = arr[start];
@@ -39,6 +42,7 @@ public class ArrayUtils {
         }
     }
 
+    // Time - O(n), Space - O(1)
     public static int findMax(int[] arr) {
         int max = Integer.MIN_VALUE;
         for (int i = 0; i < arr.length; i++) {
@@ -50,6 +54,7 @@ public class ArrayUtils {
         return max;
     }
 
+    // Time - O(n), Space - O(1)
     public static int findMin(int[] arr) {
         int min = Integer.MAX_VALUE;
         for (int i = 0; i < arr.length; i++) {
@@ -61,6 +66,7 @@ public class ArrayUtils {
         return min;
     }
 
+    // Time - O(n), Space - O(1)
     public static int findSecondMax(int[] arr) {
         int max = Integer.MIN_VALUE;
         int secondMax = Integer.MIN_VALUE;
@@ -75,6 +81,7 @@ public class ArrayUtils {
         return secondMax;
     }
 
+    // Time - O(n), Space - O(1)
     public static void moveZeroesToEnd(int[] arr) {
         int left = 0;
         for (int right = 0; right < arr.length; right++) {
@@ -85,6 +92,38 @@ public class ArrayUtils {
                 left++;
             }
         }
+    }
+
+    // Time - O(n), Space - O(n)
+    public static int[] resize(int[] arr, int capacity) {
+        int[] newArray = new int[capacity];
+
+        if (capacity > arr.length) {
+            for (int i = 0; i < arr.length; i++) {
+                newArray[i] = arr[i];
+            }
+        } else if (capacity < arr.length) {
+            for (int i = 0; i < newArray.length; i++) {
+                newArray[i] = arr[i];
+            }
+        } else {
+            return arr;
+        }
+
+        return newArray;
+    }
+
+    // Time - O(n), Space - O(1)
+    public static int findMissingNumber(int[] arr) {
+        int n = arr.length + 1;
+        int total = n * (n + 1) / 2;
+        int sum = 0;
+
+        for (int i = 0; i < arr.length; i++) {
+            sum += arr[i];
+        }
+
+        return total - sum;
     }
 
     public static void main(String[] args) {
@@ -116,5 +155,13 @@ public class ArrayUtils {
         // Move zeroes to end while maintaining relative positions of non-zeroes.
         moveZeroesToEnd(arr);
         printArray(arr);
+
+        printArray(resize(arr, 4));
+
+        arr = new int[]{1, 6, 3, 4, 2}; 
+
+        System.out.println("\nMissing number from this array:");
+        printArray(arr);
+        System.out.println(findMissingNumber(arr));
     }
 }   

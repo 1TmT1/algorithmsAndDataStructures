@@ -1,4 +1,4 @@
-package data_structures;
+package data_structures.list;
 
 public class SinglyLinkedList {
     private ListNode head;
@@ -243,10 +243,126 @@ public class SinglyLinkedList {
             current = current.next;
         }
 
-        if (current != null) {
+        if (current != null && prev != null) {
             prev.next = current.next;
             current.next = null;
         }
+    }
+
+    public boolean detectLoop() {
+        ListNode fastPointer = head;
+        ListNode slowPointer = head;
+
+        while (fastPointer != null && fastPointer.next != null) {
+            fastPointer = fastPointer.next.next;
+            slowPointer = slowPointer.next;
+
+            if (slowPointer == fastPointer) {
+                return  true;
+            }
+        }
+
+        return false;
+    }
+
+    public ListNode findStartOfLoop() {
+        ListNode fastPointer = head;
+        ListNode slowPointer = head;
+
+        while (fastPointer != null && fastPointer.next != null) {
+            fastPointer = fastPointer.next.next;
+            slowPointer = slowPointer.next;
+
+            if (slowPointer == fastPointer) {
+                return findStartLoop(slowPointer);
+            }
+        }
+        
+        return null;
+    }
+
+    private ListNode findStartLoop(ListNode slowPointer) {
+        ListNode temp = head;
+
+        while (temp != slowPointer) {
+            temp = temp.next;
+            slowPointer = slowPointer.next;
+        }
+
+        return slowPointer;
+    }
+
+    public void deleteLoop() {
+        ListNode fastPointer = head;
+        ListNode slowPointer = head;
+
+        while (fastPointer != null && fastPointer.next != null) {
+            fastPointer = fastPointer.next.next;
+            slowPointer = slowPointer.next;
+            if (slowPointer == fastPointer) {
+                deleteLoop(slowPointer);
+                return;
+            }
+        }
+    }
+
+    private void deleteLoop(ListNode slowPointer) {
+        ListNode temp = head;
+        while (slowPointer.next != temp.next) {
+            temp = temp.next;
+            slowPointer = slowPointer.next;
+        }
+        
+        slowPointer.next = null;
+    }
+
+    public static ListNode merge(ListNode a, ListNode b) {
+        ListNode dummy = new ListNode(0);
+        ListNode tail = dummy;
+
+        while (a != null && b != null) {
+            if (a.data <= b.data) {
+                tail.next = a;
+                a = a.next;
+            } else {
+                tail.next = b;
+                b = b.next;
+            }
+            tail = tail.next;
+        }
+
+        if (a == null) {
+            tail.next = b;
+        } else {
+            tail.next = a;
+        } 
+        
+        return dummy.next;
+    }
+
+    public static ListNode add(ListNode a, ListNode b) {
+        ListNode dummy = new ListNode(0);
+        ListNode tail = dummy;
+        int carry = 0;
+
+        while (a != null || b != null) {
+            int x = (a != null) ? a.data : 0;
+            int y = (b != null) ? b.data : 0;
+            int sum = carry + x +y;
+            carry = sum / 10;
+            
+            tail.next = new ListNode(sum % 10);
+            tail = tail.next;
+
+            if (a != null) a = a.next;
+            if (b != null) b = b.next;
+        }
+
+        if (carry > 0) {
+            tail.next = new ListNode(carry);
+        }
+
+        return dummy.next;
     }
 
     public static void main(String[] args) {
@@ -259,6 +375,15 @@ public class SinglyLinkedList {
         sll.head.next = second;
         second.next = third;
         third.next = fourth;
+        fourth.next = second;
+
+        System.out.println(sll.detectLoop());
+
+        System.out.println(sll.findStartOfLoop().data);
+
+        sll.deleteLoop();
+        
+        System.out.println(sll.detectLoop());
 
         sll.printSinglyLinkedList();
         System.out.println(sll.findLength());
@@ -275,15 +400,17 @@ public class SinglyLinkedList {
         sll.printSinglyLinkedList();
 
         ListNode deleted = sll.deleteFirstNode();
-        System.out.println("Deleted node value: " + deleted.data);
+
+        final String deleteMsg = "Deleted node value: ";
+        System.out.println(deleteMsg + deleted.data);
         sll.printSinglyLinkedList();
 
         deleted = sll.deleteLastNode();
-        System.out.println("Deleted node value: " + deleted.data);
+        System.out.println(deleteMsg + deleted.data);
         sll.printSinglyLinkedList();
 
         deleted = sll.deleteNodeInIndex(4);
-        System.out.println("Deleted node value: " + deleted.data);
+        System.out.println(deleteMsg + deleted.data);
         sll.printSinglyLinkedList();
 
         System.out.println(sll.search(4));
@@ -301,5 +428,28 @@ public class SinglyLinkedList {
         
         sll.deleteValueFromLinkedList(4);
         sll.printSinglyLinkedList();
+
+        SinglyLinkedList sll2 = new SinglyLinkedList();
+        sll2.addToEnd(2);
+        sll2.addToEnd(5);
+        sll2.addToEnd(7);
+        sll2.addToEnd(70);
+
+        System.out.println();
+        sll.printSinglyLinkedList();
+        sll2.printSinglyLinkedList();
+
+        SinglyLinkedList result = new SinglyLinkedList();
+        
+        result.head = add(sll.head, sll2.head);
+        System.out.println("Addition result of two linked list:");
+        result.printSinglyLinkedList();
+
+        System.out.println();
+
+        result.head = merge(sll.head, sll2.head);
+        System.out.println("Merge two sorted linked list:");
+        result.printSinglyLinkedList();
+
     }
 }

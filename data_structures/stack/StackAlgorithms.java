@@ -1,13 +1,13 @@
 package data_structures.stack;
 
-import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
+import java.util.LinkedList;
 
 public class StackAlgorithms {
 
     public static String reverse(String str) {
-        Deque<Character> stack = new ArrayDeque<>();
+        Deque<Character> stack = new LinkedList<>();
         char[] chars = str.toCharArray();
 
         for (char c : chars) {
@@ -23,7 +23,7 @@ public class StackAlgorithms {
 
     public static int[] nextGreaterElement(int[] arr) {
         int[] result = new int[arr.length];
-        Deque<Integer> stack = new ArrayDeque<>();
+        Deque<Integer> stack = new LinkedList<>();
 
         for (int i = arr.length - 1; i > -1; i--) {
             while (!stack.isEmpty() && stack.peek() <= arr[i]) {
@@ -43,7 +43,7 @@ public class StackAlgorithms {
     }
 
     public static boolean isValidParentheses(String str) {
-        Deque<Character> stack = new ArrayDeque<>();
+        Deque<Character> stack = new LinkedList<>();
 
         for (char c : str.toCharArray()) {
             if (c == '(' || c == '[' || c == '{') {
